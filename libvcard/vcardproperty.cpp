@@ -157,7 +157,7 @@ QList<vCardProperty> vCardProperty::fromByteArray(const QByteArray& data)
     return properties;
 }
 
-vCardProperty createAddress(const QString& street, const QString& locality, const QString& region, const QString& postal_code, const QString& country, const QString& post_office_box, const QString& ext_address, const vCardParamList& params)
+vCardProperty vCardProperty::createAddress(const QString& street, const QString& locality, const QString& region, const QString& postal_code, const QString& country, const QString& post_office_box, const QString& ext_address, const vCardParamList& params)
 {
     QStringList values;
     values.insert(vCardProperty::PostOfficeBox, post_office_box);
@@ -171,17 +171,17 @@ vCardProperty createAddress(const QString& street, const QString& locality, cons
     return vCardProperty(VC_ADDRESS, values, params);
 }
 
-vCardProperty createBirthday(const QDate& birthday, const vCardParamList& params)
+vCardProperty vCardProperty::createBirthday(const QDate& birthday, const vCardParamList& params)
 {
     return vCardProperty(VC_BIRTHDAY, birthday.toString("yyyy-MM-dd"), params);
 }
 
-vCardProperty createBirthday(const QDateTime& birthday, const vCardParamList& params)
+vCardProperty vCardProperty::createBirthday(const QDateTime& birthday, const vCardParamList& params)
 {
     return vCardProperty(VC_BIRTHDAY, birthday.toString("yyyy-MM-ddThh:mm:ssZ"), params);
 }
 
-vCardProperty createGeographicPosition(qreal latitude, qreal longitude, const vCardParamList& params)
+vCardProperty vCardProperty::createGeographicPosition(qreal latitude, qreal longitude, const vCardParamList& params)
 {
     QStringList values;
     values.insert(vCardProperty::Latitude, QString("%1").arg(latitude));
@@ -190,7 +190,7 @@ vCardProperty createGeographicPosition(qreal latitude, qreal longitude, const vC
     return vCardProperty(VC_GEOGRAPHIC_POSITION, values, params);
 }
 
-vCardProperty createName(const QString& firstname, const QString& lastname, const QString& additional, const QString& prefix, const QString& suffix, const vCardParamList& params)
+vCardProperty vCardProperty::createName(const QString& firstname, const QString& lastname, const QString& additional, const QString& prefix, const QString& suffix, const vCardParamList& params)
 {
     QStringList values;
     values.insert(vCardProperty::Lastname, lastname);
@@ -202,7 +202,7 @@ vCardProperty createName(const QString& firstname, const QString& lastname, cons
     return vCardProperty(VC_NAME, values, params);
 }
 
-vCardProperty createOrganization(const QString& name, const QStringList& levels, const vCardParamList& params)
+vCardProperty vCardProperty::createOrganization(const QString& name, const QStringList& levels, const vCardParamList& params)
 {
     QStringList values;
     values.append(name);
