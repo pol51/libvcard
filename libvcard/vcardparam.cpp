@@ -191,7 +191,7 @@ QList<vCardParam> vCardParam::fromByteArray(const QByteArray& data)
 {
     QList<vCardParam> params;
 
-    QStringList tokens = QString(data).simplified().split(VC_SEPARATOR_TOKEN);
+    QStringList tokens = QString::fromUtf8(data).simplified().split(VC_SEPARATOR_TOKEN);
     foreach (QString token, tokens)
     {
 	int token_size = token.count();

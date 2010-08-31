@@ -137,7 +137,7 @@ QList<vCardProperty> vCardProperty::fromByteArray(const QByteArray& data)
 {
     QList<vCardProperty> properties;
 
-    QStringList lines = QString(data).split(VC_END_LINE_TOKEN);
+    QStringList lines = QString::fromUtf8(data).split(VC_END_LINE_TOKEN);
     foreach (QString line, lines)
     {
         if (line == VC_BEGIN_TOKEN || line == VC_END_TOKEN)
