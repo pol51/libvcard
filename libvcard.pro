@@ -19,7 +19,7 @@
 # $Date$
 ##
 
-VERSION=1.0.0
+VERSION=1.0.1
 VCARD_INCDIR = include/vcard
 VCARD_SRCDIR = libvcard
 
