@@ -1,0 +1,27 @@
+Source: libvcard
+Priority: extra
+Maintainer: Card Tech <info@card-tech.it>
+Build-Depends: debhelper (>= 7)
+Standards-Version: 3.8.4
+Section: libs
+Homepage: http://code.google.com/p/libvcard/
+
+Package: libvcard-dev
+Section: libdevel
+Architecture: any
+Depends: ${misc:Depends}, libvcard (= ${binary:Version})
+Description: a C++ library for vCard specification
+ This is a C++ library for all your vCard needs.
+ .
+ For more info please visit: http://www.imc.org/pdi/vcard-21.txt
+ .
+ This package contains the development files.
+
+Package: libvcard
+Section: libs
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-dev
+Description: a C++ library for vCard specification
+ This is a C++ library for all your vCard needs.
+ .
+ For more info please visit: http://www.imc.org/pdi/vcard-21.txt
