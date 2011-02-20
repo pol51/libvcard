@@ -115,11 +115,14 @@ QByteArray vCardProperty::toByteArray(vCardVersion version) const
         case VC_VER_3_0:
         {
             buffer.append(m_name).toUpper();
-            if (!m_params.isEmpty())
+            QByteArray params = vCardParam::toByteArray(m_params, version);
+
+            if (!params.isEmpty())
             {
                 buffer.append(VC_SEPARATOR_TOKEN);
-                buffer.append(vCardParam::toByteArray(m_params, version));
+                buffer.append(params);
             }
+
             buffer.append(QString(VC_ASSIGNMENT_TOKEN));
             buffer.append(m_values.join(QString(VC_SEPARATOR_TOKEN)));
         }
@@ -147,9 +150,13 @@ QList<vCardProperty> vCardProperty::fromByteArray(const QByteArray& data)
         {
             QStringList property_tokens = tokens.at(0).split(VC_SEPARATOR_TOKEN);
             QString name = property_tokens.takeAt(0);
-            vCardParamList params = vCardParam::fromByteArray(property_tokens.join(QString(VC_SEPARATOR_TOKEN)).toUtf8());
 
-            properties.append(vCardProperty(name, tokens.at(1), params));
+            if (name != VC_VERSION)
+            {
+                vCardParamList params = vCardParam::fromByteArray(property_tokens.join(QString(VC_SEPARATOR_TOKEN)).toUtf8());
+
+                properties.append(vCardProperty(name, tokens.at(1), params));
+            }
         }
     }
 
