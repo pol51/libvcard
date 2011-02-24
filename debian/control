@@ -1,7 +1,7 @@
 Source: libvcard
 Priority: extra
 Maintainer: Card Tech <info@card-tech.it>
-Build-Depends: debhelper (>= 7)
+Build-Depends: debhelper (>= 7), libqt4-dev, qt4-qmake
 Standards-Version: 3.8.4
 Section: libs
 Homepage: http://code.google.com/p/libvcard/
@@ -20,7 +20,7 @@ Description: a C++ library for vCard specification
 Package: libvcard
 Section: libs
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}, libqt4-dev
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: a C++ library for vCard specification
  This is a C++ library for all your vCard needs.
  .
