@@ -35,23 +35,27 @@ public:
     vCard(const vCard& vcard);
     vCard(const vCardPropertyList& properties);
     virtual ~vCard();
-    
+
     void addProperty(const vCardProperty& property);
-    void removeProperty(const vCardProperty& property);
+    void removeProperties(const QString& name);
     void addProperties(const vCardPropertyList& properties);
-    vCardPropertyList properties() const;
+    void clear() { m_properties.clear(); }
+    const vCardProperty properties(const QString& name) const;
+    const vCardPropertyList &properties() const { return m_properties; }
     vCardProperty property(const QString& name, const vCardParamList& params = vCardParamList(), bool strict = false) const;
     bool contains(const QString& property, const vCardParamList& params = vCardParamList(), bool strict = false) const;
     bool contains(const vCardProperty& property) const;
     bool isValid() const;
-    
+
     int count() const;
     QByteArray toByteArray(vCardVersion version = VC_VER_2_1) const;
-    
+
     bool saveToFile(const QString& filename) const;
-    
+
     static QList<vCard> fromByteArray(const QByteArray& data);
     static QList<vCard> fromFile(const QString& filename);
+
+    vCard &operator=(const vCard& other) { m_properties = other.m_properties; }
 };
 
 typedef QList<vCard> vCardList;

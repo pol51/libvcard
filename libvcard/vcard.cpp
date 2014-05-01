@@ -61,18 +61,23 @@ void vCard::addProperty(const vCardProperty& property)
 void vCard::addProperties(const vCardPropertyList& properties)
 {
     foreach (vCardProperty property, properties)
-        this->addProperty(property);
+        addProperty(property);
 }
 
-vCardPropertyList vCard::properties() const
+void vCard::removeProperties(const QString &name)
 {
-    return m_properties;
+    for (int i = m_properties.count(); --i >= 0; )
+    {
+        vCardProperty current = m_properties.at(i);
+        if (current.name() == name)
+            m_properties.removeAt(i);
+    }
 }
 
 vCardProperty vCard::property(const QString& name, const vCardParamList& params, bool strict) const
 {
     int count = m_properties.count();
-    for (int i = 0; i < count; i++)
+    for (int i = 0; i < count; ++i)
     {
         vCardProperty current = m_properties.at(i);
         if (current.name() == name)
@@ -97,6 +102,17 @@ vCardProperty vCard::property(const QString& name, const vCardParamList& params,
     }
 
     return vCardProperty();
+}
+
+const vCardProperty vCard::properties(const QString& name) const
+{
+  QStringList Values;
+
+  foreach (const vCardProperty Property, m_properties)
+      if (Property.name() == name)
+          Values.append(Property.values());
+
+  return !Values.isEmpty()?vCardProperty(name, Values):vCardProperty();
 }
 
 bool vCard::contains(const QString& name, const vCardParamList& params, bool strict) const
@@ -173,7 +189,7 @@ QByteArray vCard::toByteArray(vCardVersion version) const
 
     foreach (vCardProperty property, this->properties())
         lines.append(property.toByteArray(version));
-   
+
     lines.append(VC_END_TOKEN);
 
     return lines.join(QString(VC_END_LINE_TOKEN)).toUtf8();
@@ -189,7 +205,7 @@ bool vCard::saveToFile(const QString& filename) const
 
         return true;
     }
-   
+
     return false;
 }
 
@@ -198,7 +214,7 @@ QList<vCard> vCard::fromByteArray(const QByteArray& data)
     QList<vCard> vcards;
     vCard current;
     bool started = false;
-   
+
     QList<QByteArray> lines = data.split(VC_END_LINE_TOKEN);
     foreach (QByteArray line, lines)
     {
@@ -210,6 +226,7 @@ QList<vCard> vCard::fromByteArray(const QByteArray& data)
         else if ((line == VC_END_TOKEN) && started)
         {
             vcards.append(current);
+            current.clear();
             started = false;
         }
 
@@ -219,7 +236,7 @@ QList<vCard> vCard::fromByteArray(const QByteArray& data)
             current.addProperties(props);
         }
     }
-   
+
    return vcards;
 }
 
