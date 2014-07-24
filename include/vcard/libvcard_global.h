@@ -25,12 +25,6 @@
 
 #include <QtCore/qglobal.h>
 
-#if defined(VCARD_LIBRARY)
-#  define VCARDSHARED_EXPORT Q_DECL_EXPORT
-#else
-#  define VCARDSHARED_EXPORT Q_DECL_IMPORT
-#endif
-
 #define VC_SEPARATOR_TOKEN ';'
 #define VC_END_LINE_TOKEN '\n'
 #define VC_BEGIN_TOKEN "BEGIN:VCARD"

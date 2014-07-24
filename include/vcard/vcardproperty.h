@@ -55,7 +55,7 @@
 #define VC_URL                  "URL"
 #define VC_VERSION              "VERSION"
 
-class VCARDSHARED_EXPORT vCardProperty
+class vCardProperty
 {
 public:
     enum GenericFields

@@ -26,7 +26,7 @@
 #include "libvcard_global.h"
 #include <QtCore/QString>
 
-class VCARDSHARED_EXPORT vCardParam
+class vCardParam
 {
 public:
     enum vCardParamGroup

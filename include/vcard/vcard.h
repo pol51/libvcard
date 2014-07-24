@@ -25,7 +25,7 @@
 
 #include "vcardproperty.h"
 
-class VCARDSHARED_EXPORT vCard
+class vCard
 {
 protected:
     vCardPropertyList m_properties;
