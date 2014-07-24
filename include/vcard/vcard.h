@@ -55,7 +55,7 @@ public:
     static QList<vCard> fromByteArray(const QByteArray& data);
     static QList<vCard> fromFile(const QString& filename);
 
-    vCard &operator=(const vCard& other) { m_properties = other.m_properties; }
+    vCard &operator=(const vCard& other) { m_properties = other.m_properties; return *this; }
 };
 
 typedef QList<vCard> vCardList;
