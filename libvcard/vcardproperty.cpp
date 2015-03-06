@@ -151,6 +151,15 @@ QList<vCardProperty> vCardProperty::fromByteArray(const QByteArray& data)
             QStringList property_tokens = tokens.at(0).split(VC_SEPARATOR_TOKEN);
             QString name = property_tokens.takeAt(0);
 
+            // scheme of URLs uses ':' it's not VC_ASSIGNMENT_TOKEN
+            if (tokens.count() >= 3 && name == VC_URL && VC_ASSIGNMENT_TOKEN == ':')
+            {
+                if (tokens.at(tokens.size() - 2).contains(QRegExp("ftp|http|https|data"))) {
+                    tokens[tokens.size() - 2] = tokens.at(tokens.size() - 2) + ":" + tokens.at(tokens.size() - 1);
+                    tokens.takeLast();
+                }
+            }
+
             if (name != VC_VERSION)
             {
                 vCardParamList params = vCardParam::fromByteArray(property_tokens.join(QString(VC_SEPARATOR_TOKEN)).toUtf8());
