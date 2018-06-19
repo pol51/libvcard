@@ -22,4 +22,11 @@ include_directories(AFTER SYSTEM include/vcard ${CMAKE_BINARY_DIR})
 add_library(vcard ${vcard_cpp} ${vcard_h})
 
 target_link_libraries(vcard Qt5::Core)
+set_target_properties(vcard PROPERTIES
+	PUBLIC_HEADER "${vcard_h}")
+
+include(GNUInstallDirs)
+install(TARGETS vcard
+	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vcard)
 ################################################################################
