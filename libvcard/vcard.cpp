@@ -216,28 +216,47 @@ QList<vCard> vCard::fromByteArray(const QByteArray& data)
     bool started = false;
 
     QList<QByteArray> lines = data.split(VC_END_LINE_TOKEN);
-    foreach (QByteArray line, lines)
+
+    QByteArray current_line;
+    for(QList<QByteArray>::const_iterator it = lines.begin();
+        it != lines.end();
+        ++it)
     {
-        line = line.simplified();
+        QList<QByteArray>::const_iterator next = it+1;
 
-        if ((line == VC_BEGIN_TOKEN) && !started)
-            started = true;
-
-        else if ((line == VC_END_TOKEN) && started)
+        if(!it->startsWith(' '))
         {
-            vcards.append(current);
-            current.clear();
-            started = false;
+            current_line = it->simplified();
         }
 
-        else if (started)
+        if(next != lines.end() && next->startsWith(' '))
         {
-            vCardPropertyList props = vCardProperty::fromByteArray(line);
-            current.addProperties(props);
+            // unfold long line according to rfc6350 "3.2.Line Delimiting and Folding"
+            // " ... Unfolding is accomplished by regarding CRLF immediately
+            // followed by a white space character ... "
+            current_line.append(next->simplified());
+        }
+        else
+        {
+            if ((current_line == VC_BEGIN_TOKEN) && !started){
+                started = true;
+            }
+            else if ((current_line == VC_END_TOKEN) && started)
+            {
+                vcards.append(current);
+                current.clear();
+                started = false;
+            }
+            else if (started)
+            {
+                vCardPropertyList props = vCardProperty::fromByteArray(current_line);
+                current.addProperties(props);
+            }
+
+            current_line.clear();
         }
     }
-
-   return vcards;
+    return vcards;
 }
 
 QList<vCard> vCard::fromFile(const QString& filename)
