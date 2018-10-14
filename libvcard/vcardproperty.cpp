@@ -162,7 +162,11 @@ QList<vCardProperty> vCardProperty::fromByteArray(const QByteArray& data)
 
             if (name != VC_VERSION)
             {
-                vCardParamList params = vCardParam::fromByteArray(property_tokens.join(QString(VC_SEPARATOR_TOKEN)).toUtf8());
+                vCardParamList params;
+                if (property_tokens.size() > 0)
+                {
+                    params = vCardParam::fromByteArray(property_tokens.join(QString(VC_SEPARATOR_TOKEN)).toUtf8());
+                }
 
                 properties.append(vCardProperty(name, tokens.at(1), params));
             }
