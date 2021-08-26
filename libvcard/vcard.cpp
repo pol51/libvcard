@@ -209,6 +209,21 @@ bool vCard::saveToFile(const QString& filename) const
     return false;
 }
 
+bool vCard::saveToFile(const QList<vCard> &vCardList, const QString &filename)
+{
+    QFile output(filename);
+    if (output.open(QFile::WriteOnly)) {
+        foreach (auto v, vCardList) {
+            output.write(v.toByteArray() + VC_END_LINE_TOKEN);
+        }
+        output.close();
+
+        return true;
+    }
+
+    return false;
+}
+
 QList<vCard> vCard::fromByteArray(const QByteArray& data)
 {
     QList<vCard> vcards;
