@@ -21,7 +21,9 @@
  */
 
 #include "vcard.h"
+#include <QtCore/QDir>
 #include <QtCore/QFile>
+#include <QtCore/QFileInfo>
 
 vCard::vCard()
 {
@@ -209,16 +211,27 @@ bool vCard::saveToFile(const QString& filename) const
     return false;
 }
 
-bool vCard::saveToFile(const QList<vCard> &vCardList, const QString &filename)
+bool vCard::saveToFile(const QList<vCard> &vCardList, const QString &filepath)
 {
-    QFile output(filename);
-    if (output.open(QFile::WriteOnly)) {
-        foreach (auto v, vCardList) {
-            output.write(v.toByteArray() + VC_END_LINE_TOKEN);
-        }
-        output.close();
+    QFileInfo fi(filepath);
+    QString sPath = fi.path();
+    QString sName = fi.fileName();
 
-        return true;
+    QDir dir = QDir::root();
+    if (dir.cd(sPath)) {
+
+        QFile file(dir.filePath(sName));
+
+        if (file.open(QFile::WriteOnly)) {
+
+            foreach (auto v, vCardList) {
+                file.write(v.toByteArray() + VC_END_LINE_TOKEN);
+            }
+
+            file.close();
+
+            return true;
+        }
     }
 
     return false;
