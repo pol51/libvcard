@@ -197,15 +197,25 @@ QByteArray vCard::toByteArray(vCardVersion version) const
     return lines.join(QString(VC_END_LINE_TOKEN)).toUtf8();
 }
 
-bool vCard::saveToFile(const QString& filename) const
+bool vCard::saveToFile(const QString& filePath) const
 {
-    QFile output(filename);
-    if (output.open(QFile::WriteOnly))
-    {
-        output.write(this->toByteArray());
-        output.close();
+    QFileInfo fi(filePath);
+    QString sPath = fi.path();
+    QString sName = fi.fileName();
 
-        return true;
+    QDir dir = QDir::root();
+    if (dir.cd(sPath)) {
+
+        QFile file(dir.filePath(sName));
+
+        if (file.open(QFile::WriteOnly)) {
+
+            file.write(this->toByteArray());
+
+            file.close();
+
+            return true;
+        }
     }
 
     return false;
