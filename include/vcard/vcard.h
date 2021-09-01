@@ -51,7 +51,7 @@ public:
     QByteArray toByteArray(vCardVersion version = VC_VER_2_1) const;
 
     bool saveToFile(const QString& filename) const;
-    bool static saveToFile(const QList<vCard> &vCardList, const QString &filename);
+    bool static saveToFile(const QList<vCard> &vCardList, const QString &filepath);
 
     static QList<vCard> fromByteArray(const QByteArray& data);
     static QList<vCard> fromFile(const QString& filename);
