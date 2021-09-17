@@ -24,6 +24,8 @@
 #include <QtCore/QDir>
 #include <QtCore/QFile>
 #include <QtCore/QFileInfo>
+#include <QtCore/QTextCodec>
+#include <QtCore/QTextStream>
 
 vCard::vCard()
 {
@@ -304,7 +306,20 @@ QList<vCard> vCard::fromFile(const QString& filename)
     QFile input(filename);
     if (input.open(QFile::ReadOnly | QFile::Text))
     {
-        vcards = vCard::fromByteArray(input.readAll());
+        QTextCodec *tc = QTextCodec::codecForName("UTF-8");
+
+        QByteArray buff = input.readAll();
+
+        QTextCodec::ConverterState state;
+        QString tmpStr = tc->toUnicode(buff, 100, &state);
+
+        if (state.invalidChars) {
+            tmpStr = QTextCodec::codecForName("GBK")->toUnicode(buff);
+        } else {
+            tmpStr = tc->toUnicode(buff);
+        }
+
+        vcards = vCard::fromByteArray(tmpStr.toLocal8Bit().data());
         input.close();
     }
 
